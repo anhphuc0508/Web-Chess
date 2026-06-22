@@ -4,9 +4,9 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
-require_once 'config.php';
-require_once 'BLL/MatchBLL.php';
-require_once 'BLL/UserBLL.php';
+require_once '../config.php';
+require_once '../bll/MatchBLL.php';
+require_once '../bll/UserBLL.php';
 
 $user_id = $_SESSION['user_id'];
 $matchBLL = new MatchBLL($pdo);
@@ -61,7 +61,7 @@ $history_list = $matchBLL->getAllHistory($user_id);
                     </thead>
                     <tbody>
                         <?php if (empty($history_list)): ?>
-                            <tr><td colspan="5" class="text-center">Sếp chưa đánh ván nào, đi "vả" bot tí đi!</td></tr>
+                            <tr><td colspan="5" class="text-center">Chưa có dữ liệu thi đấu !</td></tr>
                         <?php else: ?>
                             <?php foreach ($history_list as $row): ?>
                                 <tr>

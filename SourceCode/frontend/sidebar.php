@@ -126,7 +126,7 @@
 
     function loadFriends() {
         if (searchInput.value.trim().length >= 2) return;
-        fetch('API/api_get_friends.php').then(res => res.json()).then(data => {
+        fetch('../api/api_get_friends.php').then(res => res.json()).then(data => {
             if (data.length === 0) {
                 resultsArea.innerHTML = '<div class="empty-state"><h6>Chơi cờ vua sẽ vui hơn khi chơi cùng bạn bè</h6></div>';
                 return;
@@ -163,7 +163,7 @@
             return;
         }
         searchTimeout = setTimeout(() => {
-            fetch('API/api_search_users.php?query=' + encodeURIComponent(query))
+            fetch('../api/api_search_users.php?query=' + encodeURIComponent(query))
                 .then(res => res.json())
                 .then(data => {
                     if (data.length === 0) {
@@ -187,7 +187,7 @@
                     resultsArea.innerHTML = html + '</div>';
                     document.querySelectorAll('.btn-add-friend').forEach(btn => {
                         btn.onclick = () => {
-                            fetch('API/api_add_friend.php', {
+                            fetch('../api/api_add_friend.php', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -210,7 +210,7 @@
 
     // --- TẢI DANH SÁCH LỜI MỜI KẾT BẠN ---
     function loadRequests() {
-        fetch('API/api_get_requests.php').then(res => res.json()).then(data => {
+        fetch('../api/api_get_requests.php').then(res => res.json()).then(data => {
             const requestsTab = document.getElementById('requestsTab');
             if (data.length === 0) {
                 requestsTab.innerHTML = '<div class="empty-state" style="margin-top: 60px;"><h4>Không có yêu cầu mới</h4></div>';
@@ -234,7 +234,7 @@
 
             document.querySelectorAll('.btn-accept-req').forEach(btn => {
                 btn.onclick = () => {
-                    fetch('API/api_handle_request.php', {
+                    fetch('../api/api_handle_request.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
@@ -245,7 +245,7 @@
             });
             document.querySelectorAll('.btn-reject-req').forEach(btn => {
                 btn.onclick = () => {
-                    fetch('API/api_handle_request.php', {
+                    fetch('../api/api_handle_request.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
@@ -257,7 +257,7 @@
         });
 
         // Cập nhật badge
-        fetch('API/api_get_requests.php').then(res => res.json()).then(data => {
+        fetch('../api/api_get_requests.php').then(res => res.json()).then(data => {
             const badge = document.getElementById('friend-badge');
             if (data.length > 0) {
                 badge.style.display = 'block';

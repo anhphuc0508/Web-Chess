@@ -4,9 +4,9 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
-require_once 'config.php';
-require_once 'BLL/UserBLL.php';
-require_once 'BLL/MatchBLL.php';
+require_once '../config.php';
+require_once '../bll/UserBLL.php';
+require_once '../bll/MatchBLL.php';
 
 $user_id = $_SESSION['user_id'];
 
@@ -36,7 +36,7 @@ $history_list = $matchBLL->getRecentHistory($user_id, 5);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
-            background-image: url(./assets/img/background.png);
+            background-image: url(../assets/img/background.png);
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -60,15 +60,15 @@ $history_list = $matchBLL->getRecentHistory($user_id, 5);
 
         .main-content {
           
-            box-sizing: border-box; /* BẮT BUỘC: Ép tất cả padding nằm gọn bên trong 100vh, không làm tràn khung */
-            overflow-y: auto; /* Bật thanh cuộn ĐỘC LẬP cho riêng khu vực này */
-            margin-left: 0; /* Không thêm margin, để flex layout tự xử lý */
+            box-sizing: border-box; 
+            overflow-y: auto; 
+            margin-left: 0; 
             padding-top: 450px;
-            padding-bottom: 80px; /* Giữ khoảng trống ở đáy để khi cuộn hết cỡ không bị sát mép */
+            padding-bottom: 80px; 
             display: flex;
             flex-direction: column;
             align-items: center;
-            flex: 1; /* Chiếm hết không gian còn lại sau sidebar */
+            flex: 1; 
         }
 
         .player-profile {
@@ -230,7 +230,7 @@ $history_list = $matchBLL->getRecentHistory($user_id, 5);
     <div class="main-content">
         <?php if ($activeMatch): ?>
             <div class="alert alert-warning d-flex justify-content-between align-items-center mb-4 w-100" style="max-width: 1100px; background-color: #262421; border: 1px solid #81b64c; color: white;">
-                <div><strong style="color: #81b64c;">⚡ Bạn đang có ván đấu chưa kết thúc!</strong></div>
+                <div><strong style="color: #81b64c;">Bạn đang có ván đấu chưa kết thúc!</strong></div>
                 <a href="multiplayer.php?id=<?php echo $activeMatch['id']; ?>&color=<?php echo $myColor; ?>&opponent=<?php echo urlencode($activeMatch['opponent_name']); ?>&elo=<?php echo $activeMatch['opponent_elo']; ?>" class="btn btn-success">Vào lại ngay</a>
             </div>
         <?php endif; ?>

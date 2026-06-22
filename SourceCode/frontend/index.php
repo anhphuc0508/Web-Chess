@@ -11,7 +11,7 @@ if (isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <title>Chơi Cờ Vua Trực Tuyến</title>
     
-    <link rel="stylesheet" href="./assets/css/chessboard-1.0.0.min.css">
+    <link rel="stylesheet" href="../assets/css/chessboard-1.0.0.min.css">
     
     <style>
         body {
@@ -105,9 +105,9 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </main>
 
-    <script src="./assets/js/jquery-3.6.0.min.js"></script>
-    <script src="./assets/js/chessboard-1.0.0.min.js"></script>
-    <script src="./assets/js/chess.min.js"></script>
+    <script src="../assets/js/jquery-3.6.0.min.js"></script>
+    <script src="../assets/js/chessboard-1.0.0.min.js"></script>
+    <script src="../assets/js/chess.min.js"></script>
 
     <script>
         var board = null;
@@ -140,7 +140,7 @@ if (isset($_SESSION['user_id'])) {
         var config = {
             draggable: false, // KHÔNG CHO NGƯỜI DÙNG KÉO THẢ
             position: 'start',
-            pieceTheme: './assets/img/{piece}.png'
+            pieceTheme: '../assets/img/{piece}.png'
         };
 
         board = Chessboard('myBoard', config);

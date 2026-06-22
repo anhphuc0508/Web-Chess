@@ -1,18 +1,17 @@
 const io = require('socket.io')(3000, { cors: { origin: "*" } });
 const mysql = require('mysql2');
 
-// Cấu hình Database
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'thaibinh123',
     database: 'chess_db'
 });
 
-let waitingPlayers = []; 
-const activeMatches = {}; 
+let waitingPlayers = [];
+const activeMatches = {};
 
-const onlineUsers = new Map(); 
+const onlineUsers = new Map();
 
 function closeMatch(matchId) {
     db.query('UPDATE matches SET status = "finished" WHERE id = ?', [matchId]);
@@ -24,9 +23,9 @@ io.on('connection', (socket) => {
     socket.on('find-match', (data) => {
         waitingPlayers.push({ socketId: socket.id, userId: data.userId, username: data.username, elo: data.elo });
         if (waitingPlayers.length >= 2) {
-            const p1 = waitingPlayers.shift(); 
-            const p2 = waitingPlayers.shift(); 
-            const matchId = `room_${Date.now()}`; 
+            const p1 = waitingPlayers.shift();
+            const p2 = waitingPlayers.shift();
+            const matchId = `room_${Date.now()}`;
 
             const initialFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
             db.query('INSERT INTO matches (id, white_id, black_id, current_fen, move_history, status) VALUES (?, ?, ?, ?, ?, "playing")',
@@ -66,18 +65,18 @@ io.on('connection', (socket) => {
         socket.to(data.matchId).emit('receive-move', data.move);
     });
 
-    socket.on('match-finished', (matchId) => { 
-        closeMatch(matchId); 
+    socket.on('match-finished', (matchId) => {
+        closeMatch(matchId);
     });
 
-    socket.on('resign', (matchId) => { 
-        socket.to(matchId).emit('opponent-resigned'); 
-        closeMatch(matchId); 
+    socket.on('resign', (matchId) => {
+        socket.to(matchId).emit('opponent-resigned');
+        closeMatch(matchId);
     });
     socket.on('offer-draw', (matchId) => { socket.to(matchId).emit('draw-offered'); });
-    socket.on('accept-draw', (matchId) => { 
-        socket.to(matchId).emit('draw-accepted'); 
-        closeMatch(matchId); 
+    socket.on('accept-draw', (matchId) => {
+        socket.to(matchId).emit('draw-accepted');
+        closeMatch(matchId);
     });
     socket.on('decline-draw', (matchId) => { socket.to(matchId).emit('draw-declined'); });
 
@@ -87,7 +86,7 @@ io.on('connection', (socket) => {
                 if (activeMatches[room]) {
                     activeMatches[room].players--;
                     socket.to(room).emit('opponent-disconnected-temp');
-                    
+
                     activeMatches[room].timer = setTimeout(() => {
                         if (activeMatches[room] && activeMatches[room].players < 2) {
                             socket.to(room).emit('opponent-abandoned');
@@ -105,7 +104,7 @@ io.on('connection', (socket) => {
 
     socket.on('send-challenge', (data) => {
         const receiverSocketId = onlineUsers.get(data.receiverId.toString());
-        
+
         if (receiverSocketId) {
             io.to(receiverSocketId).emit('receive-challenge', data);
         } else {
@@ -114,33 +113,33 @@ io.on('connection', (socket) => {
     });
 
     socket.on('accept-challenge', (data) => {
-       const senderSocketId = onlineUsers.get(data.senderId.toString());
-    
-    const initialFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-    db.query(
-        'INSERT INTO matches (id, white_id, black_id, current_fen, move_history, status) VALUES (?, ?, ?, ?, ?, "playing")',
-        [data.roomId, data.senderId, data.receiverId, initialFen, JSON.stringify([])],
-        (err, results) => {
-            if (err) {
-                console.error("Lỗi khi tạo trận thách đấu:", err);
-                socket.emit('challenge-error', 'Không thể tạo trận đấu, vui lòng thử lại!');
-                return;
+        const senderSocketId = onlineUsers.get(data.senderId.toString());
+
+        const initialFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        db.query(
+            'INSERT INTO matches (id, white_id, black_id, current_fen, move_history, status) VALUES (?, ?, ?, ?, ?, "playing")',
+            [data.roomId, data.senderId, data.receiverId, initialFen, JSON.stringify([])],
+            (err, results) => {
+                if (err) {
+                    console.error("Lỗi khi tạo trận thách đấu:", err);
+                    socket.emit('challenge-error', 'Không thể tạo trận đấu, vui lòng thử lại!');
+                    return;
+                }
+
+                if (senderSocketId) {
+                    io.to(senderSocketId).emit('challenge-accepted', data);
+                }
+
+
+                io.to(socket.id).emit('challenge-receiver-ready', data);
             }
-            
-            if (senderSocketId) {
-                io.to(senderSocketId).emit('challenge-accepted', data);
-            }
-            
-    
-            io.to(socket.id).emit('challenge-receiver-ready', data);
-        }
-    );
-});
+        );
+    });
 
     socket.on('disconnect', () => {
-       
+
         waitingPlayers = waitingPlayers.filter(p => p.socketId !== socket.id);
-        
+
         for (let [userId, sId] of onlineUsers.entries()) {
             if (sId === socket.id) {
                 onlineUsers.delete(userId);

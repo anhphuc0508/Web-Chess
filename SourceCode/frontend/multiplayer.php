@@ -4,8 +4,8 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
-require_once 'config.php';
-require_once 'BLL/UserBLL.php';
+require_once '../config.php';
+require_once '../bll/UserBLL.php';
 
 $user_id = $_SESSION['user_id'];
 $userBLL = new UserBLL($pdo);
@@ -15,6 +15,9 @@ $matchId = $_GET['id'] ?? 'room_default';
 $playerColor = $_GET['color'] ?? 'w';
 $opponentName = $_GET['opponent'] ?? 'Đối thủ';
 $opponentElo = $_GET['elo'] ?? '1200';
+$opponentInfo = $userBLL->getOpponentInfo($opponentName);
+$opponentAvatar = ($opponentInfo && !empty($opponentInfo['avatar'])) ? $opponentInfo['avatar'] : 'default_avatar.png';
+$myAvatar = !empty($currentUser['avatar']) ? $currentUser['avatar'] : 'default_avatar.png';
 
 ?>
 <!DOCTYPE html>
@@ -24,7 +27,7 @@ $opponentElo = $_GET['elo'] ?? '1200';
     <meta charset="UTF-8">
     <title>Chess Online PvP</title>
     <link rel="stylesheet" href="sidebar.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="./assets/css/chessboard-1.0.0.min.css">
+    <link rel="stylesheet" href="../assets/css/chessboard-1.0.0.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -197,7 +200,7 @@ $opponentElo = $_GET['elo'] ?? '1200';
     <main>
         <div class="board-area">
             <div class="player-info">
-                <div class="avatar-box" style="background-color: #5c5854;">👽</div>
+                <img src="<?php echo $opponentAvatar; ?>" style="width: 45px; height: 45px; border-radius: 8px; border: 2px solid #5c5854; object-fit: cover; box-shadow: 0 2px 5px rgba(0,0,0,0.5);">
                 <div class="player-text">
                     <div class="name" id="opponent-name"><?php echo htmlspecialchars($opponentName); ?></div>
                     <div class="elo">⭐ <?php echo htmlspecialchars($opponentElo); ?></div>
@@ -207,9 +210,9 @@ $opponentElo = $_GET['elo'] ?? '1200';
             <div id="mainBoard"></div>
 
             <div class="player-info bottom-player">
-                <div class="avatar-box" style="background-color: #81b64c; border: 2px solid #fff;">😎</div>
+                <img src="<?php echo $myAvatar; ?>" style="width: 45px; height: 45px; border-radius: 8px; border: 2px solid #81b64c; object-fit: cover; box-shadow: 0 2px 5px rgba(0,0,0,0.5);">
                 <div class="player-text">
-                    <div class="name"><?php echo htmlspecialchars($_SESSION['username']); ?></div>
+                    <div class="name"><?php echo htmlspecialchars($_SESSION['nickname'] ?? $_SESSION['username'] ?? 'Người chơi'); ?></div>
                     <div class="elo">⭐ <?php echo isset($_SESSION['elo']) ? htmlspecialchars($_SESSION['elo']) : "1200"; ?></div>
                 </div>
             </div>
@@ -272,9 +275,9 @@ $opponentElo = $_GET['elo'] ?? '1200';
         </div>
     </main>
 
-    <script src="./assets/js/jquery-3.6.0.min.js"></script>
-    <script src="./assets/js/chess.min.js"></script>
-    <script src="./assets/js/chessboard-1.0.0.min.js"></script>
+    <script src="../assets/js/jquery-3.6.0.min.js"></script>
+    <script src="../assets/js/chess.min.js"></script>
+    <script src="../assets/js/chessboard-1.0.0.min.js"></script>
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
     <script>
@@ -290,7 +293,7 @@ $opponentElo = $_GET['elo'] ?? '1200';
         function saveOnlineMatch(resultStatus) {
             let totalMoves = Math.ceil(game.history().length / 2);
             $.ajax({
-                url: 'API/save_match.php',
+                url: '../api/save_match.php',
                 type: 'POST',
                 data: {
                     opponent_name: '<?php echo $opponentName; ?>',
@@ -402,7 +405,7 @@ $opponentElo = $_GET['elo'] ?? '1200';
 
                 let totalMoves = Math.ceil(game.history().length / 2);
                 $.ajax({
-                    url: 'API/save_match.php',
+                    url: '../api/save_match.php',
                     type: 'POST',
                     data: {
                         opponent_name: '<?php echo $opponentName; ?>',
@@ -535,7 +538,7 @@ $opponentElo = $_GET['elo'] ?? '1200';
             draggable: false, // TẮT kéo thả, chỉ cho phép click
             position: 'start',
             orientation: myColor === 'w' ? 'white' : 'black',
-            pieceTheme: './assets/img/{piece}.png'
+            pieceTheme: '../assets/img/{piece}.png'
         };
         board = Chessboard('mainBoard', config);
     </script>

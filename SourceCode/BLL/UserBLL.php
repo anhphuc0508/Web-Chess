@@ -3,7 +3,7 @@
  * UserBLL - Lớp xử lý logic nghiệp vụ cho User
  * Xử lý: đăng nhập, đăng ký, cập nhật hồ sơ, tìm kiếm, xếp hạng
  */
-require_once __DIR__ . '/../DAL/UserDAL.php';
+require_once __DIR__ . '/../dal/UserDAL.php';
 
 class UserBLL {
     private $userDAL;
@@ -115,7 +115,7 @@ class UserBLL {
 
         $fileName = "avatar_" . $userId . "_" . time() . ".png";
         $targetFile = $targetDir . $fileName;
-        $relativePath = "uploads/" . $fileName;
+        $relativePath = "../uploads/" . $fileName;
 
         if (move_uploaded_file($file['tmp_name'], $targetFile)) {
             $this->userDAL->updateAvatar($userId, $relativePath);
@@ -140,6 +140,19 @@ class UserBLL {
             return [];
         }
         return $this->userDAL->searchUsers($query, $excludeUserId);
+    }
+
+    /**
+     * Lấy thông tin đối thủ
+     */
+    public function getOpponentInfo($opponentName) {
+        $opponent = $this->userDAL->findOpponent($opponentName);
+        if ($opponent && !empty($opponent['avatar'])) {
+            if (strpos($opponent['avatar'], '../') !== 0) {
+                $opponent['avatar'] = '../' . $opponent['avatar'];
+            }
+        }
+        return $opponent;
     }
 }
 ?>

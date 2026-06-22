@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../config.php';
-require_once __DIR__ . '/../BLL/MatchBLL.php';
+require_once __DIR__ . '/../bll/MatchBLL.php';
 
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['status' => 'error', 'message' => 'Chưa đăng nhập']);

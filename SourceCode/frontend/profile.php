@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once 'config.php';
-require_once 'BLL/UserBLL.php';
+require_once '../config.php';
+require_once '../bll/UserBLL.php';
 
 if (!isset($_SESSION['user_id'])) { header("Location: login.php"); exit(); }
 

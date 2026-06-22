@@ -4,8 +4,8 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
-require_once 'config.php';
-require_once 'BLL/UserBLL.php';
+require_once '../config.php';
+require_once '../bll/UserBLL.php';
 
 $user_id = $_SESSION['user_id'];
 $userBLL = new UserBLL($pdo);

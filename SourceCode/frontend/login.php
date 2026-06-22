@@ -9,11 +9,9 @@ if (isset($_SESSION['user_id'])) {
 
 $error = '';
 
-// Gọi file cấu hình database vào đây
-require_once 'config.php';
-require_once 'BLL/UserBLL.php';
+require_once '../config.php';
+require_once '../bll/UserBLL.php';
 
-// XỬ LÝ KHI NGƯỜI DÙNG BẤM "VÀO CHƠI"
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';

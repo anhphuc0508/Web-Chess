@@ -3,9 +3,9 @@
  * MatchBLL - Lớp xử lý logic nghiệp vụ cho Match
  * Xử lý: tìm trận đấu đang chơi dở, lưu kết quả, tính ELO
  */
-require_once __DIR__ . '/../DAL/MatchDAL.php';
-require_once __DIR__ . '/../DAL/MatchHistoryDAL.php';
-require_once __DIR__ . '/../DAL/UserDAL.php';
+require_once __DIR__ . '/../dal/MatchDAL.php';
+require_once __DIR__ . '/../dal/MatchHistoryDAL.php';
+require_once __DIR__ . '/../dal/UserDAL.php';
 
 class MatchBLL {
     private $matchDAL;
@@ -18,10 +18,6 @@ class MatchBLL {
         $this->userDAL = new UserDAL($pdo);
     }
 
-    /**
-     * Tìm trận đấu đang chơi dở của user
-     * @return array|null Thông tin trận đấu và màu quân user cầm
-     */
     public function getActiveMatch($userId) {
         $match = $this->matchDAL->findActiveMatch($userId);
         if ($match) {
@@ -30,9 +26,7 @@ class MatchBLL {
         return $match;
     }
 
-    /**
-     * Lấy thống kê thi đấu của user
-     */
+ 
     public function getStats($userId) {
         $stats = $this->historyDAL->getStats($userId);
         $stats['win_rate'] = ($stats['total_matches'] > 0) 
@@ -41,23 +35,17 @@ class MatchBLL {
         return $stats;
     }
 
-    /**
-     * Lấy lịch sử thi đấu gần đây (mặc định 5 trận)
-     */
+
     public function getRecentHistory($userId, $limit = 5) {
         return $this->historyDAL->getRecentHistory($userId, $limit);
     }
 
-    /**
-     * Lấy toàn bộ lịch sử thi đấu
-     */
+ 
     public function getAllHistory($userId) {
         return $this->historyDAL->getAllHistory($userId);
     }
 
-    /**
-     * Tính hệ số K dựa trên ELO
-     */
+  
     private function getKFactor($elo) {
         if ($elo < 1600) {
             return 32;
@@ -68,9 +56,7 @@ class MatchBLL {
         }
     }
 
-    /**
-     * Tính ELO mới sau trận đấu
-     */
+   
     private function calculateNewElo($myElo, $opElo, $matchResult) {
         $K = $this->getKFactor($myElo);
         $expected = 1 / (1 + pow(10, ($opElo - $myElo) / 400));
@@ -80,29 +66,22 @@ class MatchBLL {
         return round($myElo + $K * ($score - $expected));
     }
 
-    /**
-     * Lưu kết quả trận đấu (bao gồm tính ELO nếu online)
-     * Giữ nguyên logic gốc từ save_match.php
-     */
+
     public function saveMatchResult($userId, $myName, $opponentName, $gameMode, $result, $totalMoves, $isAbandoned, $myColor) {
-        // Tìm đối thủ trong database
         $opponent = $this->userDAL->findOpponent($opponentName);
 
         if ($isAbandoned) {
-            // Trường hợp đối thủ bỏ cuộc
             $this->historyDAL->saveMatch($userId, $opponentName, 'online_mode', 'win', $totalMoves);
 
             if ($opponent) {
                 $this->historyDAL->saveMatch($opponent['id'], $myName, 'online_mode', 'lose', $totalMoves);
             }
-            $result = 'win'; // Ép thành Win để bên dưới được phép tính Elo
+            $result = 'win'; 
             $gameMode = 'online_mode';
         } else {
-            // Lưu kết quả bình thường
             $this->historyDAL->saveMatch($userId, $opponentName, $gameMode, $result, $totalMoves);
         }
 
-        // Tính ELO cho trận online
         $shouldCalcElo = ($result === 'win' || ($result === 'draw' && $myColor === 'w'));
 
         if ($gameMode === 'online_mode' && $opponent && $shouldCalcElo) {

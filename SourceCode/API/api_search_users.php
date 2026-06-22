@@ -2,7 +2,7 @@
 
 session_start();
 require_once __DIR__ . '/../config.php';
-require_once __DIR__ . '/../BLL/UserBLL.php';
+require_once __DIR__ . '/../bll/UserBLL.php';
 
 $userId = $_SESSION['user_id'];
 $query = $_GET['query'] ?? '';
