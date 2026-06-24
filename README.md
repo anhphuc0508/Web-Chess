@@ -4,3 +4,86 @@ Các tính năng chính:
 + Sảnh chờ : Hiển thị thông tin người chơi, điểm ELO và các chế độ chơi.
 + Lịch sử thi đấu: Lưu trữ và hiển thị kết quả các ván đấu gần đây từ Database.
 + Bàn cờ Demo: Trang chủ tích hợp bàn cờ tự động đánh
+
+HƯỚNG DẪN CÀI ĐẶT VÀ CHẠY CHƯƠNG TRÌNH CHI TIẾT
+
+Ứng dụng Cờ Vua này hoạt động dựa trên mô hình:
+- Backend / Web: PHP (dùng để xử lý logic web cơ bản, giao diện, đăng nhập, đăng ký).
+- Cơ sở dữ liệu: MySQL (lưu trữ thông tin người dùng, lịch sử đấu).
+- Server Real-time: Node.js kết hợp Socket.io (xử lý logic trò chơi thời gian thực và ghép trận).
+
+
+PHẦN 1: CHUẨN BỊ MÔI TRƯỜNG
+
+1. Cài đặt Web Server (PHP & MySQL):
+   - Tải và cài đặt Laragon (khuyên dùng, tại https://laragon.org/download).
+   - Mở Laragon lên và nhấn "Start All" để khởi động Web Server và Database.
+
+2. Cài đặt Node.js:
+   - Truy cập trang chủ https://nodejs.org.
+   - Tải và cài đặt phiên bản LTS (Long Term Support).
+   - Để kiểm tra cài đặt thành công, mở Terminal (hoặc Command Prompt) và gõ lệnh: `node -v`. Nếu hiển thị số phiên bản (ví dụ: v18.x.x) là thành công.
+
+3. Đưa source code vào đúng thư mục:
+   - Nếu dùng Laragon: Đặt toàn bộ thư mục dự án (`chess`) vào thư mục `C:\laragon\www\`.
+
+PHẦN 2: THIẾT LẬP CƠ SỞ DỮ LIỆU (DATABASE)
+
+1. Mở công cụ quản lý Database:
+   - Dùng công cụ HeidiSQL (bằng cách nhấn nút "Database" trên giao diện Laragon).
+   - Đăng nhập (thường User mặc định là `root`, Password để trống).
+
+2. Tạo Database mới:
+   - Nhấn "New" để tạo một cơ sở dữ liệu mới.
+   - Đặt tên cơ sở dữ liệu là: `chess_db`
+   - Chọn Collation (Bảng mã) là: `utf8mb4_general_ci` (để hỗ trợ tiếng Việt có dấu, lưu tên người dùng chuẩn xác).
+   - Nhấn Create (Tạo).
+
+3. Import dữ liệu cấu trúc bảng:
+   - Bấm vào database `chess_db` vừa tạo bên cột trái.
+   - Chuyển sang tab "Import" (Nhập).
+   - Chọn file SQL chứa cấu trúc database của dự án.
+   - Nhấn nút để tạo các bảng.
+
+PHẦN 3: CẤU HÌNH KẾT NỐI
+
+1. Cấu hình cho PHP:
+   - Mở file `config.php` nằm ở thư mục gốc của dự án (`d:\laragon\www\chess\config.php`).
+   - Tìm đoạn mã kết nối và đảm bảo các thông số khớp với MySQL:
+     $host = 'localhost';
+     $dbname = 'chess_db'; 
+     $db_user = 'root';    
+     $db_pass = ''; 
+
+2. Cấu hình cho Node.js:
+   - Mở file `server.js` ở thư mục gốc.
+   - Tìm đến dòng khai báo kết nối cơ sở dữ liệu `mysql.createConnection(...)` hoặc `mysql.createPool(...)`.
+   - Kiểm tra thông tin `user: 'root'` và `password: ''` xem đã chính xác với máy của bạn chưa.
+
+
+PHẦN 4: CÀI ĐẶT THƯ VIỆN & CHẠY SERVER REAL-TIME
+
+1. Mở Terminal / Command Prompt:
+   - Mở thư mục dự án bằng Visual Studio Code (hoặc trình soạn thảo bạn quen dùng).
+   - Mở Terminal tích hợp trong VS Code (chọn Menu Terminal > New Terminal).
+
+2. Cài đặt các gói NPM:
+   - Đảm bảo Terminal đang ở đúng thư mục dự án (`d:\laragon\www\chess>`).
+   - Gõ lệnh sau và nhấn Enter:
+     npm install
+   - Quá trình này sẽ tải về thư mục `node_modules` chứa các thư viện bắt buộc để chạy game như `socket.io` và `mysql2`. Đợi vài giây đến khi chạy xong.
+
+3. Khởi động WebSocket Server (Server Game):
+   - Vẫn trong Terminal đó, gõ lệnh:
+     node server.js
+   - LƯU Ý QUAN TRỌNG: Bạn PHẢI giữ nguyên cửa sổ Terminal này (không được tắt) trong suốt quá trình chơi game. Nếu tắt, tính năng chơi 2 người (Multiplayer) sẽ mất kết nối.
+
+PHẦN 5: CHẠY TRANG WEB VÀ KIỂM TRA
+
+Truy cập vào Game:
+   - Mở trình duyệt web (Chrome, Edge, Safari...).
+   - Nhập đường dẫn sau để vào trang chủ:
+     http://localhost/chess
+   - Bạn sẽ thấy giao diện trang chủ của ứng dụng. Hãy thử đăng ký một tài khoản mới và đăng nhập.
+
+
