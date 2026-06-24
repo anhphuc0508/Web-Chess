@@ -1,8 +1,5 @@
 <?php
-/**
- * UserBLL - Lớp xử lý logic nghiệp vụ cho User
- * Xử lý: đăng nhập, đăng ký, cập nhật hồ sơ, tìm kiếm, xếp hạng
- */
+
 require_once __DIR__ . '/../dal/UserDAL.php';
 
 class UserBLL {
@@ -12,10 +9,7 @@ class UserBLL {
         $this->userDAL = new UserDAL($pdo);
     }
 
-    /**
-     * Xử lý đăng nhập
-     * @return array ['success' => bool, 'message' => string, 'user' => array|null]
-     */
+    
     public function login($username, $password) {
         $username = trim($username);
 
@@ -32,10 +26,7 @@ class UserBLL {
         return ['success' => false, 'message' => 'Tên đăng nhập hoặc mật khẩu không đúng!'];
     }
 
-    /**
-     * Xử lý đăng ký
-     * @return array ['success' => bool, 'message' => string]
-     */
+  
     public function register($username, $password, $confirmPassword) {
         $username = trim($username);
 
@@ -61,31 +52,22 @@ class UserBLL {
         return ['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại sau.'];
     }
 
-    /**
-     * Lấy thông tin user theo ID
-     */
+  
     public function getUserById($userId) {
         return $this->userDAL->getUserById($userId);
     }
 
-    /**
-     * Lấy thông tin cơ bản (username, nickname, elo, avatar)
-     */
+   
     public function getUserBasicInfo($userId) {
         return $this->userDAL->getUserBasicInfo($userId);
     }
 
-    /**
-     * Lấy thông tin hiển thị (username, nickname, avatar - dùng cho vsbot)
-     */
+   
     public function getUserDisplayInfo($userId) {
         return $this->userDAL->getUserDisplayInfo($userId);
     }
 
-    /**
-     * Cập nhật nickname
-     * @return array ['success' => bool, 'message' => string]
-     */
+  
     public function updateNickname($userId, $nickname) {
         $nickname = trim($nickname);
 
@@ -101,10 +83,7 @@ class UserBLL {
         return ['success' => true, 'message' => 'Cập nhật nickname thành công!'];
     }
 
-    /**
-     * Cập nhật avatar
-     * @return array ['success' => bool, 'message' => string, 'path' => string|null]
-     */
+  
     public function updateAvatar($userId, $file) {
         if ($file['error'] != 0) {
             return ['success' => false, 'message' => 'Lỗi upload file!'];
@@ -125,16 +104,12 @@ class UserBLL {
         return ['success' => false, 'message' => 'Không thể upload ảnh!'];
     }
 
-    /**
-     * Lấy bảng xếp hạng
-     */
+   
     public function getRankings($limit = 50) {
         return $this->userDAL->getTopRankings($limit);
     }
 
-    /**
-     * Tìm kiếm user
-     */
+   
     public function searchUsers($query, $excludeUserId) {
         if (strlen($query) < 2) {
             return [];
@@ -142,9 +117,7 @@ class UserBLL {
         return $this->userDAL->searchUsers($query, $excludeUserId);
     }
 
-    /**
-     * Lấy thông tin đối thủ
-     */
+  
     public function getOpponentInfo($opponentName) {
         $opponent = $this->userDAL->findOpponent($opponentName);
         if ($opponent && !empty($opponent['avatar'])) {

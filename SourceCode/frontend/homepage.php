@@ -267,7 +267,7 @@ $history_list = $matchBLL->getRecentHistory($user_id, 5);
         </div>
 
         <div class="match-history">
-            <h3 class="mb-4">Lịch Sử Thi Đấu</h3>
+            <h3 class="mb-4">Lịch Sử Thi Đấu Gần Đây</h3>
             <table class="table history-table">
                 <thead>
                     <tr>

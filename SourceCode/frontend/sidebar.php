@@ -284,19 +284,29 @@
             receiverId: friendId,
             roomId: roomId
         });
-        alert("Đã gửi lời mời!");
     }
+
+    appSocket.on('challenge-sent-success', () => {
+        alert("Đã gửi lời mời!");
+    });
+
+    appSocket.on('challenge-error', (msg) => {
+        alert("Lỗi: " + msg);
+    });
 
     appSocket.on('receive-challenge', (data) => {
         document.getElementById('challenge-badge').style.display = 'block';
         document.getElementById('challenge-badge').innerText = "1";
         document.getElementById('challengeResultArea').innerHTML = `
-            <div class="p-2 mb-2" style="background:#312e2b; border-radius:5px; border-left: 3px solid #81b64c;">
+            <div class="p-2 mb-2" style="background:#312e2b; border-radius:5px; border-left: 3px solid #81b64c;" id="challenge-item-${data.roomId}">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <img src="${data.senderAvatar}" style="width:30px; height:30px; border-radius:50%;">
                     <div style="font-size: 13px; color: white;"><b>${data.senderName}</b> mời đấu!</div>
                 </div>
-                <button class="btn btn-sm w-100" id="accept-btn-${data.roomId}" style="background-color: #81b64c; color: white;">Chấp nhận</button>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm w-50" id="accept-btn-${data.roomId}" style="background-color: #81b64c; color: white;">Chấp nhận</button>
+                    <button class="btn btn-sm w-50" id="reject-btn-${data.roomId}" style="background-color: #e63f3f; color: white;">Từ chối</button>
+                </div>
             </div>`;
         document.getElementById(`accept-btn-${data.roomId}`).onclick = () => {
             appSocket.emit('accept-challenge', {
@@ -307,6 +317,22 @@
                 senderName: data.senderName
             });
         };
+        document.getElementById(`reject-btn-${data.roomId}`).onclick = () => {
+            appSocket.emit('reject-challenge', {
+                senderId: data.senderId,
+                roomId: data.roomId,
+                receiverId: myUserId,
+                receiverName: myName
+            });
+            const item = document.getElementById(`challenge-item-${data.roomId}`);
+            if (item) item.remove();
+            
+            const area = document.getElementById('challengeResultArea');
+            if (area.children.length === 0) {
+                area.innerHTML = '<div class="empty-state text-center text-muted" style="margin-top: 20px; font-size: 13px;">Không có lời mời nào</div>';
+                document.getElementById('challenge-badge').style.display = 'none';
+            }
+        };
     });
 
     appSocket.on('challenge-receiver-ready', (data) => {
@@ -315,5 +341,9 @@
 
     appSocket.on('challenge-accepted', (data) => {
         window.location.href = `multiplayer.php?id=${data.roomId}&color=w&opponent=${encodeURIComponent(data.receiverName)}`;
+    });
+
+    appSocket.on('challenge-rejected', (data) => {
+        alert(data.receiverName + " đã từ chối lời mời thách đấu của bạn.");
     });
 </script>

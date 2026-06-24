@@ -21,7 +21,6 @@ try {
     $matchBLL = new MatchBLL($pdo);
     $saveResult = $matchBLL->saveMatchResult($userId, $myName, $opponentName, $gameMode, $result, $totalMoves, $isAbandoned, $myColor);
 
-    // Cập nhật lại Session nếu ELO thay đổi
     if ($saveResult['newElo'] !== null) {
         $_SESSION['elo'] = $saveResult['newElo'];
     }

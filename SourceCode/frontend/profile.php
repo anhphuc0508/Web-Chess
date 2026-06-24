@@ -21,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error = isset($result['error']) ? $result['error'] : false;
     }
 
-    // 2. XỬ LÝ UPLOAD AVATAR
     if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == 0) {
         $result = $userBLL->updateAvatar($user_id, $_FILES['avatar']);
         $message = $result['message'];
@@ -54,7 +53,7 @@ $user = $userBLL->getUserById($user_id);
     <div class="main-content">
         <div class="profile-card text-center">
             <h2 class="mb-4" style="color: #81b64c;">Quản Lý Hồ Sơ</h2>
-            <?php if($message): ?> <div class="alert alert-success border-0 bg-success text-white"><?php echo $message; ?></div> <?php endif; ?>
+            <?php if($message): ?> <div class="alert alert-success border-0 text-white" style="background-color: #81b64c;"><?php echo $message; ?></div> <?php endif; ?>
             
             <form action="" method="POST" enctype="multipart/form-data">
                 <img src="<?php echo $user['avatar'] ?: 'default_avatar.png'; ?>" class="avatar-preview" id="previewImg">

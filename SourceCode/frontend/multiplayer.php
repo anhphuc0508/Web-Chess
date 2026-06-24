@@ -535,7 +535,7 @@ $myAvatar = !empty($currentUser['avatar']) ? $currentUser['avatar'] : 'default_a
 
         
         const config = {
-            draggable: false, // TẮT kéo thả, chỉ cho phép click
+            draggable: false, 
             position: 'start',
             orientation: myColor === 'w' ? 'white' : 'black',
             pieceTheme: '../assets/img/{piece}.png'

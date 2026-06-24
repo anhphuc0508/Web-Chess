@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Nếu đã đăng nhập rồi thì chuyển hướng vào trang chủ
 if (isset($_SESSION['user_id'])) {
     header("Location: homepage.php");
     exit();

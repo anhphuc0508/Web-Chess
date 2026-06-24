@@ -1,8 +1,5 @@
 <?php
-/**
- * MatchBLL - Lớp xử lý logic nghiệp vụ cho Match
- * Xử lý: tìm trận đấu đang chơi dở, lưu kết quả, tính ELO
- */
+
 require_once __DIR__ . '/../dal/MatchDAL.php';
 require_once __DIR__ . '/../dal/MatchHistoryDAL.php';
 require_once __DIR__ . '/../dal/UserDAL.php';

@@ -42,7 +42,6 @@ if (isset($_SESSION['user_id'])) {
         .hero-text h1 { font-size: 56px; margin-bottom: 20px; line-height: 1.2; }
         .hero-text p { font-size: 18px; color: #c3c2c1; margin-bottom: 40px; line-height: 1.6; }
 
-        /* Khu vực chứa bàn cờ thật */
         .board-container {
             width: 450px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); border-radius: 4px; pointer-events: none; /* Khóa click chuột vào bàn cờ */
         }
@@ -126,26 +125,22 @@ if (isset($_SESSION['user_id'])) {
 
             var possibleMoves = game.moves();
             
-            // Chọn bừa một nước đi hợp lệ
             var randomIdx = Math.floor(Math.random() * possibleMoves.length);
             game.move(possibleMoves[randomIdx]);
             
-            // Cập nhật lại giao diện bàn cờ
             board.position(game.fen());
 
-            // Vòng lặp: Máy tự gọi lại hàm này sau 500 mili-giây (0.5s)
             window.setTimeout(makeRandomMove, 500);
         }
 
         var config = {
-            draggable: false, // KHÔNG CHO NGƯỜI DÙNG KÉO THẢ
+            draggable: false,
             position: 'start',
             pieceTheme: '../assets/img/{piece}.png'
         };
 
         board = Chessboard('myBoard', config);
 
-        // Khởi động vòng lặp tự đánh lần đầu tiên
         window.setTimeout(makeRandomMove, 500);
     </script>
 </body>
