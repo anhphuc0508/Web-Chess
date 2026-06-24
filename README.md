@@ -1,11 +1,11 @@
-Dự án này là một ứng dụng Web chơi cờ vua trực tuyến cơ bản, được xây dựng trên nền tảng PHP và MySQL.
+Dự án này là một ứng dụng Web chơi cờ vua trực tuyến cơ bản, được xây dựng trên nền tảng PHP, MySQ và Node.js.
 Các tính năng chính:
-+ Hệ thống xác thực: Đăng ký và Đăng nhập bảo mật với mật khẩu được mã hóa.
-+ Sảnh chờ : Hiển thị thông tin người chơi, điểm ELO và các chế độ chơi.
-+ Lịch sử thi đấu: Lưu trữ và hiển thị kết quả các ván đấu gần đây từ Database.
-+ Bàn cờ Demo: Trang chủ tích hợp bàn cờ tự động đánh
-
-HƯỚNG DẪN CÀI ĐẶT VÀ CHẠY CHƯƠNG TRÌNH CHI TIẾT
++	Giao diện và tương tác: Xây dựng giao diện bàn cờ thân thiện, hỗ trợ thao tác điều khiển mượt mà, kiểm soát chặt chẽ các nước đi hầu như tuân theo đúng luật cờ vua quốc tế.
++	Chế độ ngoại tuyến: Tích hợp stockfish với nhiều cấp độ khó khác nhau để người chơi có thể tự do tập luyện.
++	Chế độ trực tuyến: Triển khai luồng ghép trận ngẫu nhiên và hệ thống gửi lời mời thách đấu giữa những người chơi đang online.
++	Hệ thống quản lý và xếp hạng: Quản lý thông tin tài khoản người dùng an toàn. Tính toán và cập nhật điểm số minh bạch sau mỗi ván đấu, từ đó hiển thị các kỳ thủ trên bảng xếp hạng của hệ thống.
+  
+Hướng dẫn cài đặt và chạy chương trình chi tiết
 
 Ứng dụng Cờ Vua này hoạt động dựa trên mô hình:
 - Backend / Web: PHP (dùng để xử lý logic web cơ bản, giao diện, đăng nhập, đăng ký).
