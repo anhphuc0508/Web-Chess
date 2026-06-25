@@ -45,7 +45,7 @@ PHẦN 2: THIẾT LẬP CƠ SỞ DỮ LIỆU (DATABASE)
    - Bấm vào database `chess_db` vừa tạo bên cột trái.
    - Chọn tab Query và chọn New query tab
      <img width="1806" height="776" alt="image" src="https://github.com/user-attachments/assets/a80feffb-d503-4aa0-8ed5-d108fe6f74af" />
-   - Copy toàn bộ code của file CSDL dán vào tab Query
+   - Copy toàn bộ các file SQL tạo bảng của folder CSDL dán vào tab Query
      <img width="1918" height="1010" alt="image" src="https://github.com/user-attachments/assets/5e189cf1-21ad-43d1-a57b-440bf00fe05b" />
    - Bôi đen toàn bộ và bấm vào nút Execute hình tam giác xanh
      <img width="1918" height="1072" alt="image" src="https://github.com/user-attachments/assets/521270f9-0e17-4f6d-86e5-7f6e4f9390db" />
