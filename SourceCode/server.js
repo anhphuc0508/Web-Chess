@@ -103,6 +103,13 @@ io.on('connection', (socket) => {
         onlineUsers.set(userId.toString(), socket.id);
     });
 
+    socket.on('send-friend-request-realtime', (data) => {
+        const receiverSocketId = onlineUsers.get(data.receiverId.toString());
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit('receive-friend-request-realtime');
+        }
+    });
+
     socket.on('send-challenge', (data) => {
         const receiverSocketId = onlineUsers.get(data.receiverId.toString());
 

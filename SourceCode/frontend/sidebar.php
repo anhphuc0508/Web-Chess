@@ -26,7 +26,7 @@
         <div id="friendsPopup" class="custom-popup">
             <div class="popup-tabs">
                 <div class="tab active" onclick="switchTab(event, 'friendsTab')">Bạn bè</div>
-                <div class="tab" onclick="switchTab(event, 'requestsTab')">Yêu cầu</div>
+                <div class="tab" id="req-tab-title" onclick="switchTab(event, 'requestsTab')">Yêu cầu</div>
             </div>
             <div id="friendsTab" class="tab-content active">
                 <div class="search-container">
@@ -210,6 +210,7 @@
                                     btn.textContent = '✓ Đã gửi';
                                     btn.disabled = true;
                                     btn.style.backgroundColor = '#555';
+                                    appSocket.emit('send-friend-request-realtime', { receiverId: btn.getAttribute('data-id') });
                                 } else {
                                     alert('Không thể gửi lời mời!');
                                 }
@@ -223,6 +224,18 @@
     function loadRequests() {
         fetch('../api/api_get_requests.php').then(res => res.json()).then(data => {
             const requestsTab = document.getElementById('requestsTab');
+            const friendBadge = document.getElementById('friend-badge');
+            const reqTabTitle = document.getElementById('req-tab-title');
+            
+            if (data.length > 0) {
+                friendBadge.textContent = data.length;
+                friendBadge.style.display = 'block';
+                if (reqTabTitle) reqTabTitle.textContent = `Yêu cầu (${data.length})`;
+            } else {
+                friendBadge.style.display = 'none';
+                if (reqTabTitle) reqTabTitle.textContent = 'Yêu cầu';
+            }
+
             if (data.length === 0) {
                 requestsTab.innerHTML = '<div class="empty-state" style="margin-top: 60px;"><h4>Không có yêu cầu mới</h4></div>';
                 return;
@@ -356,4 +369,11 @@
     appSocket.on('challenge-rejected', (data) => {
         alert(data.receiverName + " đã từ chối lời mời thách đấu của bạn.");
     });
+
+    appSocket.on('receive-friend-request-realtime', () => {
+        loadRequests(); // Lập tức tải lại yêu cầu khi vừa có người kết bạn
+    });
+
+    // Tự động tải số lượng yêu cầu kết bạn ngay khi load trang
+    loadRequests();
 </script>
