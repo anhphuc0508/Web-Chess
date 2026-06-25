@@ -71,19 +71,16 @@
     const searchInput = document.getElementById('friendSearchInput');
     const resultsArea = document.getElementById('friendsResultArea');
 
-    // --- HÀM TOGGLE CHUẨN ---
     function setupToggle(btn, popup, others) {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
 
-            // Đóng tất cả các popup khác trước
             others.forEach(p => {
                 p.classList.remove('show');
                 p.style.display = 'none';
             });
 
-            // Toggle cái hiện tại
             const isVisible = popup.classList.contains('show') || popup.style.display === 'block';
             if (isVisible) {
                 popup.classList.remove('show');
@@ -143,13 +140,28 @@
                         </div>
                     </div>
                     <div class="d-flex gap-1">
-                        <button class="btn btn-sm btn-challenge-trigger" style="color:white; border:none; background-color:#81b64c; width:40px" data-id="${friend.id}">⚔️</button>
+                        <button class="btn btn-sm btn-challenge-trigger" style="color:white; border:none; background-color:#81b64c; width:40px" title="Thách đấu" data-id="${friend.id}">⚔️</button>
+                        <button class="btn btn-sm btn-unfriend-trigger" style="color:white; border:none; background-color:#e63f3f; width:40px" title="Hủy kết bạn" data-id="${friend.id}"><i class="bi bi-person-x-fill"></i></button>
                     </div>
                 </div>`;
             });
             resultsArea.innerHTML = html + '</div>';
             document.querySelectorAll('.btn-challenge-trigger').forEach(btn => {
                 btn.onclick = () => challengeFriend(btn.getAttribute('data-id'));
+            });
+            document.querySelectorAll('.btn-unfriend-trigger').forEach(btn => {
+                btn.onclick = () => {
+                    if (confirm('Bạn có chắc chắn muốn hủy kết bạn?')) {
+                        fetch('../api/api_unfriend.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: 'friend_id=' + btn.getAttribute('data-id')
+                        }).then(res => res.json()).then(result => {
+                            if (result.success) loadFriends();
+                            else alert('Có lỗi xảy ra!');
+                        });
+                    }
+                };
             });
         });
     }
@@ -256,7 +268,6 @@
             });
         });
 
-        // Cập nhật badge
         fetch('../api/api_get_requests.php').then(res => res.json()).then(data => {
             const badge = document.getElementById('friend-badge');
             if (data.length > 0) {

@@ -322,7 +322,15 @@ $displayName = $user_data['nickname'] ?: $user_data['username'];
             const history = game.history();
             const container = $('#move-history').empty();
             for (let i = 0; i < history.length; i += 2) {
-                container.append(`<div>${(i/2)+1}. ${history[i]} ${history[i+1] || ''}</div>`);
+                let moveNum = (i/2) + 1;
+                let whiteMove = history[i];
+                let blackMove = history[i+1] || '';
+                container.append(`
+                <div style="display: flex; padding: 4px 0; border-bottom: 1px solid #3d3b39;">
+                    <span style="width: 20%; color: #888;">${moveNum}.</span>
+                    <span style="width: 40%; color: #fff;">${whiteMove}</span>
+                    <span style="width: 40%; color: #fff;">${blackMove}</span>
+                </div>`);
             }
             container.scrollTop(container[0].scrollHeight);
             if (game.game_over()) {

@@ -130,7 +130,7 @@ io.on('connection', (socket) => {
                 }
 
 
-                io.to(socket.id).emit('challenge-receiver-ready', data);
+                socket.emit('challenge-receiver-ready', data);
             }
         );
     });

@@ -23,7 +23,7 @@ $rankings = $userBLL->getRankings(50);
     <style>
         body { background-color: #363532; color: white; margin: 0; display: flex; }
         main { flex: 1; display: flex; justify-content: center; align-items: center; gap: 40px; padding: 20px; }
-        .main-content { flex: 1; margin-left: 0; padding: 40px; display: flex; flex-direction: column; align-items: center; }
+        .main-content { flex: 1; margin-left: 0; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; overflow-y: auto; }
         .ranking-card { width: 100%; max-width: 900px; background-color: #262421; border-radius: 15px; padding: 30px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
         .ranking-table { width: 100%; color: #e0e0e0; border-collapse: separate; border-spacing: 0 10px; table-layout: fixed; }
         .col-rank { width: 15%; } .col-player { width: 60%; } .col-elo { width: 25%; }
@@ -74,7 +74,7 @@ $rankings = $userBLL->getRankings(50);
                                     <div style="overflow: hidden;">
                                         <div class="fw-bold text-truncate"><?php echo htmlspecialchars($row['nickname'] ?: $row['username']); ?></div>
                                         <?php if ($row['nickname']): ?>
-                                            <small class="text-muted text-truncate d-block">@<?php echo htmlspecialchars($row['username']); ?></small>
+                                            <small class="text-truncate d-block" style="color: #a0a0a0;">@<?php echo htmlspecialchars($row['username']); ?></small>
                                         <?php endif; ?>
                                     </div>
                                     <?php if ($is_me): ?>

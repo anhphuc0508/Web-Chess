@@ -324,7 +324,7 @@ $history_list = $matchBLL->getRecentHistory($user_id, 5);
                 <div class="modal-body text-center">
                     <p>Chọn cấp độ:</p>
                     <select class="form-select bg-dark text-white border-secondary mb-3" id="botLevel">
-                        <?php for ($i = 1; $i <= 4; $i++): ?>
+                        <?php for ($i = 1; $i <= 10; $i++): ?>
                             <option value="<?php echo $i; ?>">Cấp độ <?php echo $i; ?></option>
                         <?php endfor; ?>
                     </select>

@@ -113,7 +113,6 @@ if (isset($_SESSION['user_id'])) {
         var game = new Chess();
 
         function makeRandomMove() {
-            // Nếu ván cờ kết thúc (Hòa hoặc Chiếu bí), reset lại từ đầu sau 2 giây
             if (game.game_over()) {
                 window.setTimeout(function() {
                     game.reset();
