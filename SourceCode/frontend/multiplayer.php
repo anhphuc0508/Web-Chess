@@ -131,6 +131,24 @@ $myAvatar = !empty($currentUser['avatar']) ? $currentUser['avatar'] : 'default_a
             flex: 1;
         }
 
+        #move-history::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #move-history::-webkit-scrollbar-track {
+            background: #1e1e1e; 
+            border-radius: 4px;
+        }
+
+        #move-history::-webkit-scrollbar-thumb {
+            background: #4a4946; 
+            border-radius: 4px;
+        }
+
+        #move-history::-webkit-scrollbar-thumb:hover {
+            background: #6a6966; 
+        }
+
         .history-row {
             display: flex;
             justify-content: space-between;
@@ -315,8 +333,8 @@ $myAvatar = !empty($currentUser['avatar']) ? $currentUser['avatar'] : 'default_a
                     result = (game.turn() === myColor) ? 'lose' : 'win';
                 }
                 socket.emit('match-finished', matchId);
-                alert("Ván cờ kết thúc! Bạn " + (result === 'win' ? "THẮNG" : (result === 'lose' ? "THUA" : "HÒA")));
                 saveOnlineMatch(result);
+                alert("Ván cờ kết thúc! Bạn " + (result === 'win' ? "THẮNG" : (result === 'lose' ? "THUA" : "HÒA")));
             }
         }
 
@@ -334,15 +352,15 @@ $myAvatar = !empty($currentUser['avatar']) ? $currentUser['avatar'] : 'default_a
         });
         $('#btn-accept-draw').on('click', function() {
             socket.emit('accept-draw', matchId);
-            alert("Trận đấu kết thúc với kết quả hòa.");
             saveOnlineMatch('draw');
+            alert("Trận đấu kết thúc với kết quả hòa.");
         });
         $('#btn-decline-draw').on('click', function() {
             socket.emit('decline-draw', matchId);
         });
         socket.on('draw-accepted', () => {
-            alert("Đối thủ đã đồng ý. Trận đấu kết thúc với kết quả hòa.");
             saveOnlineMatch('draw');
+            alert("Đối thủ đã đồng ý. Trận đấu kết thúc với kết quả hòa.");
         });
         socket.on('draw-declined', () => {
             alert("Đối thủ đã từ chối yêu cầu hòa. Trận đấu tiếp tục.");
@@ -351,13 +369,13 @@ $myAvatar = !empty($currentUser['avatar']) ? $currentUser['avatar'] : 'default_a
         $('#btn-resign').on('click', function() {
             if (confirm("Bạn có chắc chắn muốn đầu hàng?")) {
                 socket.emit('resign', matchId);
-                alert("Bạn đã đầu hàng.");
                 saveOnlineMatch('lose');
+                alert("Bạn đã đầu hàng.");
             }
         });
         socket.on('opponent-resigned', () => {
-            alert("Đối thủ đã đầu hàng. Bạn giành chiến thắng!");
             saveOnlineMatch('win');
+            alert("Đối thủ đã đầu hàng. Bạn giành chiến thắng!");
         });
 
         let disconnectInterval = null;

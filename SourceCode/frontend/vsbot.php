@@ -67,7 +67,24 @@ $displayName = $user_data['nickname'] ?: $user_data['username'];
             font-family: monospace;
             color: #ccc;
             flex: 1;
-           
+        }
+
+        #move-history::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #move-history::-webkit-scrollbar-track {
+            background: #1e1e1e; 
+            border-radius: 4px;
+        }
+
+        #move-history::-webkit-scrollbar-thumb {
+            background: #4a4946; 
+            border-radius: 4px;
+        }
+
+        #move-history::-webkit-scrollbar-thumb:hover {
+            background: #6a6966; 
         }
 
         .btn-custom {

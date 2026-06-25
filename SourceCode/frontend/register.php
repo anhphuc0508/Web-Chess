@@ -12,7 +12,6 @@ $success = '';
 require_once '../config.php';
 require_once '../bll/UserBLL.php';
 
-// XỬ LÝ KHI BẤM NÚT ĐĂNG KÝ
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';

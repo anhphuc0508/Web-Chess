@@ -21,7 +21,7 @@ class UserDAL {
 
     
     public function createUser($username, $hashedPassword) {
-        $stmt = $this->pdo->prepare("INSERT INTO users (username, password_hash, elo) VALUES (:username, :password_hash, 400)");
+        $stmt = $this->pdo->prepare("INSERT INTO users (username, password_hash, elo) VALUES (:username, :password_hash, 1200)");
         return $stmt->execute(['username' => $username, 'password_hash' => $hashedPassword]);
     }
 

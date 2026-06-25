@@ -220,7 +220,6 @@
         }, 300);
     });
 
-    // --- TẢI DANH SÁCH LỜI MỜI KẾT BẠN ---
     function loadRequests() {
         fetch('../api/api_get_requests.php').then(res => res.json()).then(data => {
             const requestsTab = document.getElementById('requestsTab');
