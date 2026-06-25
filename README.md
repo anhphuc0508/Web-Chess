@@ -20,8 +20,7 @@ PHẦN 1: CHUẨN BỊ MÔI TRƯỜNG
    - Mở Laragon lên và nhấn "Start All" để khởi động Web Server và Database.
 
 2. Cài đặt Node.js:
-   - Truy cập trang chủ https://nodejs.org.
-   - Tải và cài đặt phiên bản LTS (Long Term Support).
+   - Truy cập đường link https://nodejs.org/en/download/current và chọn Windows Installer
    - Để kiểm tra cài đặt thành công, mở Terminal (hoặc Command Prompt) và gõ lệnh: `node -v`. Nếu hiển thị số phiên bản (ví dụ: v18.x.x) là thành công.
 
 3. Đưa source code vào đúng thư mục:
