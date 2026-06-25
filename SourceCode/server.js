@@ -61,8 +61,6 @@ io.on('connection', (socket) => {
             db.query('UPDATE matches SET move_history = ? WHERE id = ?',
                 [JSON.stringify(activeMatches[data.matchId].history), data.matchId]);
         }
-        // console.log("=== TRẠNG THÁI RAM HIỆN TẠI ===");
-        //console.log(activeMatches);
         socket.to(data.matchId).emit('receive-move', data.move);
     });
 

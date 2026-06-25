@@ -371,9 +371,8 @@
     });
 
     appSocket.on('receive-friend-request-realtime', () => {
-        loadRequests(); // Lập tức tải lại yêu cầu khi vừa có người kết bạn
+        loadRequests(); 
     });
 
-    // Tự động tải số lượng yêu cầu kết bạn ngay khi load trang
     loadRequests();
 </script>
